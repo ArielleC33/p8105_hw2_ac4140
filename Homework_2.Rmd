@@ -1,0 +1,19 @@
+---
+title: "p8105_hw2_ac4140"
+author: "Arielle"
+date: "9/30/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library (tidyverse)
+```
+
+```{r}
+healthy_harbor =
+  readxl :: read_excel("./data/HealthyHarborWaterWheelTotals2018-7-28.xlsx", 
+   sheet = "Mr. Trash Wheel") %>% 
+  janitor :: clean_names ()
+```
+

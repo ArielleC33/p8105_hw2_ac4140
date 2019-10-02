@@ -10,10 +10,70 @@ knitr::opts_chunk$set(echo = TRUE)
 library (tidyverse)
 ```
 
+##Question 1
+
+#### First,read and cleaned the Mr. Trash Wheel Dataset
+
 ```{r}
-healthy_harbor =
-  readxl :: read_excel("./data/HealthyHarborWaterWheelTotals2018-7-28.xlsx", 
+health_harbor =
+  readxl::read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", 
    sheet = "Mr. Trash Wheel") %>% 
-  janitor :: clean_names ()
+  janitor::clean_names () %>% 
+  select(-x15, -x16, -x17) %>% 
+  drop_na(dumpster) %>%
+  mutate(
+    sports_balls = 
+      as.integer (round(sports_balls, digit = 0))
+  )
 ```
+
+#### Reading in Precipitation 2017 Dataset
+
+```{r}
+prcp_2017 =
+  readxl::read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", 
+   sheet = "2017 Precipitation",
+   range = "A2:B14") %>% 
+  janitor::clean_names () %>% 
+  drop_na(total)%>%
+  mutate(
+    year = 2017
+  )
+```
+
+#### Reading in Precipitation 2018 Dataset
+
+```{r}
+prcp_2018 =
+  readxl::read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", 
+   sheet = "2018 Precipitation",
+   range = "A2:B14" ) %>% 
+  janitor::clean_names () %>% 
+  drop_na(total)%>%
+  mutate(
+    year = 2018
+  )
+```
+
+#### Now I will combine the two Preciptation Data files into one
+
+```{r}
+prcp_full= 
+  full_join(prcp_2017,prcp_2018) %>% 
+  janitor:: clean_names() %>% 
+  mutate(
+    month = month.name[month]
+  )
+```
+
+The number observations in the health_harbor dataset is `r nrow (health_harbor)`and the number of observations in prcp_2017 was `r nrow(prcp_2017)` and the number of observations in prcp_2018 was `r nrow(prcp_2018)`. The joined data set had `r nrow(prcp_full)` number of observations. Some key variables in the dataset included month total and years. The total precipitation in 2018 was `r sum(pull(prcp_2018, total))`The median number of sports balls in dumpster in 2017 was `r median (pull(health_harbor, sports_balls))`.
+
+## Question 2 
+
+### Reading in Fiver Thirty Eight Data Sets 
+```{r}
+
+```
+
+
 

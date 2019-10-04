@@ -66,14 +66,82 @@ prcp_full=
   )
 ```
 
-The number observations in the health_harbor dataset is `r nrow (health_harbor)`and the number of observations in prcp_2017 was `r nrow(prcp_2017)` and the number of observations in prcp_2018 was `r nrow(prcp_2018)`. The joined data set had `r nrow(prcp_full)` number of observations. Some key variables in the dataset included month total and years. The total precipitation in 2018 was `r sum(pull(prcp_2018, total))`The median number of sports balls in dumpster in 2017 was `r median (pull(health_harbor, sports_balls))`.
+The number observations in the health_harbor dataset is `r nrow (health_harbor)`and the number of observations in prcp_2017 was `r nrow(prcp_2017)` and the number of observations in prcp_2018 was `r nrow(prcp_2018)`. The joined data set had `r nrow(prcp_full)` number of observations. Some key variables in the dataset included month total and years. The total precipitation in 2018 was `r sum(pull(prcp_2018, total))`The median number of sports balls in dumpster in 2017 was `r median (pull(filter(health_harbor, year==2017), sports_balls))`.
 
 ## Question 2 
 
-### Reading in Fiver Thirty Eight Data Sets 
+#### Reading in Fiver Thirty Eight Data Sets 
+#####
+    * Setting up the Pols-Month file
+   
 ```{r}
-
+pols_month_df = 
+  read_csv(file= "./data/fivethirtyeight_datasets/pols-month.csv") %>% 
+  janitor:: clean_names () %>% 
+  separate (mon, into = c("year", "month","day"), convert = TRUE) %>% 
+  mutate(month = month.name[month]) %>% 
+  mutate(prez_dem = recode(prez_dem, "1"= "dem")) %>% 
+  mutate(prez_gop = recode(prez_gop, "1"= "gop")) %>% 
+  pivot_longer(c("prez_dem", "prez_gop"),
+                  values_to = "president",
+                  values_drop_na = TRUE) %>% 
+  select(-day)
 ```
+
+#### Reading in Fiver Thirty Eight Data Sets 
+#####
+    * Setting up the SNP File
+```{r}
+SNP_df = 
+  read_csv(file="./data/fivethirtyeight_datasets/snp.csv")%>%  
+  janitor:: clean_names () %>% 
+   separate (date, into = c("month","day","year"), convert = TRUE) %>% 
+   select (year, month, close, -day) %>% 
+  mutate(month = month.name[month])
+```
+
+#### Reading in Fiver Thirty Eight Data Sets 
+#####
+    * Setting up the unemployment File
+    
+```{r}
+umemployment_df = 
+  read_csv(file="./data/fivethirtyeight_datasets/unemployment.csv")%>%  
+    pivot_longer (
+    Jan : Dec,
+    names_to = "month",
+    values_to = "rate") %>%
+    mutate(month=match(month , month.abb)) %>% 
+    mutate(month = month.name[month]) %>% 
+    mutate (Year = as.integer(Year)) %>% 
+    janitor::clean_names()
+```
+#### Reading in Fiver Thirty Eight Data Sets 
+#####
+    * Creating a new dataset that merges the three data set
+    
+```{r}
+full_data = pols_month_df %>% 
+  left_join (SNP_df,
+             by = c("year","month")) %>% 
+  left_join (
+    umemployment_df,
+    by = c("year","month")
+  )
+```
+
+The polls dataset contains info from 1947 through 2015 showing who was in office for each year and whether or it was republcian or democratic. The new variable that was made was the the president of that year and whether or not he was in the republican party or the democratic party.We also looked at the who was in office for senate, house and president.The second dataset that was enterd was SNP- s and p stock index and that the month, year and the stock index that is associated with each dates. This data set had 787 oberservation with 3 variables, the year of range 1950 to 2015. The third dataset umemployment showed the month and year and the employment rates of those years. This data set had 816 observation with three variables, the range for this data was 1947 to 2015. to In the final dataset we merge the three dataset together and came up with a final dataset that included all three dataset this data ranged from 1947 and 2015.It has 817 observations and 12 variables.They key varianbles are month and year and this is what we used to join the data sets together. 
+
+##Problem 3
+
+#### Reading and cleaning the dataset for Popularity of Baby Names
+
+```{r}
+baby_names = 
+  read_csv(file="./data/Popular_Baby_Names.csv")%>%
+  janitor:: clean_names () 
+```
+
 
 
 

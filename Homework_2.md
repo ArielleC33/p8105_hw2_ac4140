@@ -226,7 +226,6 @@ baby_names =
 ##### \* Created a new dataset with just the Olivia names and made a table with the ranking of the name across ethnicities.
 
 ``` r
-olivia_rank =
   baby_names %>% 
   filter (childs_first_name == "Olivia") %>%
   select (everything(), -count) %>% 
@@ -237,12 +236,19 @@ olivia_rank =
   knitr::kable()
 ```
 
+| ethnicity                  |  2016|  2015|  2014|  2013|  2012|  2011|
+|:---------------------------|-----:|-----:|-----:|-----:|-----:|-----:|
+| ASIAN AND PACIFIC ISLANDER |     1|     1|     1|     3|     3|     4|
+| BLACK NON HISPANIC         |     8|     4|     8|     6|     8|    10|
+| HISPANIC                   |    13|    16|    16|    22|    22|    18|
+| WHITE NON HISPANIC         |     1|     1|     1|     1|     4|     2|
+
 ##### Male Ranking
 
 ##### \* Created a new dataset that had only the top names for males across different ethnicities from 2011 to 2016.
 
 ``` r
-male_rank = baby_names %>% 
+baby_names %>% 
   filter (gender == "MALE", rank == 1) %>% 
   select(everything(), - count) %>% 
   pivot_wider(
@@ -251,6 +257,13 @@ male_rank = baby_names %>%
   select (everything(), - gender,- rank) %>% 
   knitr::kable()
 ```
+
+| ethnicity                  | 2016   | 2015   | 2014   | 2013   | 2012   | 2011    |
+|:---------------------------|:-------|:-------|:-------|:-------|:-------|:--------|
+| ASIAN AND PACIFIC ISLANDER | Ethan  | Jayden | Jayden | Jayden | Ryan   | Ethan   |
+| BLACK NON HISPANIC         | Noah   | Noah   | Ethan  | Ethan  | Jayden | Jayden  |
+| HISPANIC                   | Liam   | Liam   | Liam   | Jayden | Jayden | Jayden  |
+| WHITE NON HISPANIC         | Joseph | David  | Joseph | David  | Joseph | Michael |
 
 #### Creating a table for White Non-Hispanic names and the most popular baby names over time. Labelled the table with the proper variables.
 

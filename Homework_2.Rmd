@@ -158,7 +158,6 @@ baby_names =
 #####* Created a new dataset with just the Olivia names and made a table with the ranking of the name across ethnicities. 
 
 ```{r}
-olivia_rank =
   baby_names %>% 
   filter (childs_first_name == "Olivia") %>%
   select (everything(), -count) %>% 
@@ -174,7 +173,7 @@ olivia_rank =
 #####* Created a new dataset that had only the top names for males across different ethnicities from 2011 to 2016. 
 
 ```{r}
-male_rank = baby_names %>% 
+baby_names %>% 
   filter (gender == "MALE", rank == 1) %>% 
   select(everything(), - count) %>% 
   pivot_wider(

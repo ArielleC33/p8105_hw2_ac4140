@@ -233,7 +233,8 @@ olivia_rank =
   pivot_wider (
     names_from = year_of_birth,
     values_from = rank)%>%
-  select (everything(),-gender,-childs_first_name)
+  select (everything(),-gender,-childs_first_name) %>% 
+  knitr::kable()
 ```
 
 ##### Male Ranking
@@ -247,7 +248,8 @@ male_rank = baby_names %>%
   pivot_wider(
     names_from = year_of_birth,
     values_from = childs_first_name) %>% 
-  select (everything(), - gender,- rank) 
+  select (everything(), - gender,- rank) %>% 
+  knitr::kable()
 ```
 
 #### Creating a table for White Non-Hispanic names and the most popular baby names over time. Labelled the table with the proper variables.
@@ -260,8 +262,7 @@ baby_names %>%
     title = "Male Popularity Names and Ranking Among White Non-Hispanic",
     x = "Male Popularity Ranking",
     y = "Count with Name",
-    caption = "Data from Popular Baby Names"
-  )
+    caption = "Data from Popular Baby Names") 
 ```
 
 ![](Homework_2_files/figure-markdown_github/unnamed-chunk-12-1.png)
